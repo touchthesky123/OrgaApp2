@@ -18,7 +18,9 @@ class MainNavigationScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final useRail = constraints.maxWidth >= AppConstants.tabletBreakpoint;
+        // Für Android: Verwende kompakteres Design
+        final isAndroid = Theme.of(context).platform == TargetPlatform.android;
+        final useRail = constraints.maxWidth >= AppConstants.tabletBreakpoint && !isAndroid;
         final currentPath = GoRouterState.of(context).matchedLocation;
         final currentIndex = _getCurrentIndex(currentPath);
 
@@ -40,7 +42,7 @@ class MainNavigationScaffold extends StatelessWidget {
         children: [
           NavigationRail(
             selectedIndex: currentIndex,
-            onDestinationSelected: _onDestinationSelected,
+            onDestinationSelected: (index) => _onDestinationSelected(index, context),
             labelType: NavigationRailLabelType.selected,
             backgroundColor: colorScheme.surface,
             destinations: navigationItems.map((item) {
@@ -66,12 +68,18 @@ class MainNavigationScaffold extends StatelessWidget {
 
   /// Build layout with BottomNavigationBar for mobile
   Widget _buildBottomNavigationLayout(BuildContext context, int currentIndex) {
+    final isAndroid = Theme.of(context).platform == TargetPlatform.android;
+    
     return Scaffold(
       body: child,
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentIndex,
-        onDestinationSelected: _onDestinationSelected,
-        destinations: navigationItems.map((item) {
+        onDestinationSelected: (index) => _onDestinationSelected(index, context),
+        height: isAndroid ? 60.0 : null, // Kompakter f\u00fcr Android
+        labelBehavior: isAndroid 
+            ? NavigationDestinationLabelBehavior.onlyShowSelected
+            : NavigationDestinationLabelBehavior.alwaysShow,
+        destinations: navigationItems.take(5).map((item) { // Maximal 5 Items f\u00fcr Android
           final index = navigationItems.indexOf(item);
           return NavigationDestination(
             icon: Badge(
@@ -79,6 +87,7 @@ class MainNavigationScaffold extends StatelessWidget {
               isLabelVisible: item.badge != null,
               child: Icon(
                 currentIndex == index ? item.selectedIcon : item.icon,
+                size: isAndroid ? 20.0 : 24.0, // Kleinere Icons f\u00fcr Android
               ),
             ),
             label: item.label,
@@ -89,13 +98,10 @@ class MainNavigationScaffold extends StatelessWidget {
   }
 
   /// Handle navigation destination selection
-  void _onDestinationSelected(int index) {
+  void _onDestinationSelected(int index, BuildContext context) {
     if (index < navigationItems.length) {
       final destination = navigationItems[index];
-      final context = navigatorKey.currentContext;
-      if (context != null && context.mounted) {
-        context.go(destination.path);
-      }
+      context.go(destination.path);
     }
   }
 
@@ -110,5 +116,3 @@ class MainNavigationScaffold extends StatelessWidget {
   }
 }
 
-/// Global navigator key for navigation
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
