@@ -53,6 +53,16 @@ class OverviewService {
         },
       ),
       OverviewItem(
+        id: 'routines',
+        title: 'Routinen',
+        subtitle: 'Tägliche Gewohnheiten verfolgen',
+        icon: Icons.repeat_rounded,
+        color: Colors.cyan,
+        onTap: () {
+          // TODO: Navigate to routines page
+        },
+      ),
+      OverviewItem(
         id: 'contacts',
         title: 'Kontakte',
         subtitle: 'Wichtige Personen und Verbindungen',

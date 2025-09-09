@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../../../shared/widgets/overview_card.dart';
@@ -17,6 +18,13 @@ class OverviewPage extends ConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final overviewItems = OverviewService.getSampleOverviewItems();
+
+    // Update overview items to use navigation
+    final updatedOverviewItems = OverviewService.getSampleOverviewItems()
+        .map((item) => item.copyWith(
+              onTap: () => _navigateToSection(context, item.id),
+            ))
+        .toList();
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -67,7 +75,7 @@ class OverviewPage extends ConsumerWidget {
               // Settings button
               IconButton(
                 onPressed: () {
-                  // TODO: Navigate to settings
+                  context.go('/einstellungen');
                 },
                 icon: const Icon(Icons.settings_rounded),
                 tooltip: 'Einstellungen',
@@ -81,7 +89,7 @@ class OverviewPage extends ConsumerWidget {
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.8,
               child: ResponsiveGrid(
-                children: overviewItems
+                children: updatedOverviewItems
                     .map((item) => OverviewCard(item: item))
                     .toList(),
               ),
@@ -93,7 +101,6 @@ class OverviewPage extends ConsumerWidget {
       // Floating action button for quick actions
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // TODO: Show quick action menu
           _showQuickActionMenu(context);
         },
         icon: const Icon(Icons.add_rounded),
@@ -129,7 +136,7 @@ class OverviewPage extends ConsumerWidget {
               title: const Text('Neue Aufgabe'),
               onTap: () {
                 Navigator.pop(context);
-                // TODO: Create new task
+                context.go('/projekte');
               },
             ),
             ListTile(
@@ -137,7 +144,7 @@ class OverviewPage extends ConsumerWidget {
               title: const Text('Neuer Termin'),
               onTap: () {
                 Navigator.pop(context);
-                // TODO: Create new event
+                context.go('/kalender');
               },
             ),
             ListTile(
@@ -145,7 +152,7 @@ class OverviewPage extends ConsumerWidget {
               title: const Text('Neue Notiz'),
               onTap: () {
                 Navigator.pop(context);
-                // TODO: Create new note
+                context.go('/notizen');
               },
             ),
             
@@ -154,5 +161,49 @@ class OverviewPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// Navigate to specific section based on item ID
+  void _navigateToSection(BuildContext context, String itemId) {
+    switch (itemId) {
+      case 'tasks':
+        context.go('/projekte');
+        break;
+      case 'calendar':
+        context.go('/kalender');
+        break;
+      case 'notes':
+        context.go('/notizen');
+        break;
+      case 'projects':
+        context.go('/projekte');
+        break;
+      case 'routines':
+        context.go('/routinen');
+        break;
+      case 'contacts':
+        // TODO: Implement contacts page
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Kontakte-Seite wird bald implementiert')),
+        );
+        break;
+      case 'documents':
+        // TODO: Implement documents page
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Dokumente-Seite wird bald implementiert')),
+        );
+        break;
+      case 'analytics':
+        // TODO: Implement analytics page
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Statistiken-Seite wird bald implementiert')),
+        );
+        break;
+      case 'settings':
+        context.go('/einstellungen');
+        break;
+      default:
+        break;
+    }
   }
 }
