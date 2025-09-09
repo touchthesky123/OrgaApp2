@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/theme/typography.dart';
+import '../../../core/theme/spacing.dart';
 import '../models/project_category.dart';
 import 'project_item_tile.dart';
 
@@ -32,8 +34,8 @@ class ProjectCategoryFolder extends StatelessWidget {
 
     return Card(
       margin: EdgeInsets.symmetric(
-        horizontal: AppConstants.defaultPadding.w,
-        vertical: AppConstants.smallPadding.h,
+        horizontal: AppSpacing.xl,
+        vertical: AppSpacing.verticalSm,
       ),
       child: Column(
         children: [
@@ -62,15 +64,15 @@ class ProjectCategoryFolder extends StatelessWidget {
                 ),
                 child: ListTile(
                   leading: Container(
-                    padding: EdgeInsets.all(AppConstants.smallPadding.w),
+                    padding: EdgeInsets.all(AppSpacing.md),
                     decoration: BoxDecoration(
                       color: category.color.withAlpha(30),
-                      borderRadius: BorderRadius.circular(AppConstants.buttonRadius.r),
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                     ),
                     child: Icon(
                       category.icon,
                       color: category.color,
-                      size: 24.w,
+                      size: 16.w,
                     ),
                   ),
                   title: Row(
@@ -78,8 +80,8 @@ class ProjectCategoryFolder extends StatelessWidget {
                       Expanded(
                         child: Text(
                           category.name,
-                          style: textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+                          style: AppTypography.title(
+                            color: colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -87,18 +89,17 @@ class ProjectCategoryFolder extends StatelessWidget {
                       if (category.projectCount > 0)
                         Container(
                           padding: EdgeInsets.symmetric(
-                            horizontal: AppConstants.smallPadding.w,
-                            vertical: 2.h,
+                            horizontal: AppSpacing.sm,
+                            vertical: AppSpacing.xs,
                           ),
                           decoration: BoxDecoration(
                             color: category.color,
-                            borderRadius: BorderRadius.circular(10.r),
+                            borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
                           ),
                           child: Text(
                             '${category.projectCount}',
-                            style: textTheme.labelSmall?.copyWith(
+                            style: AppTypography.small(
                               color: Colors.white,
-                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
@@ -107,7 +108,7 @@ class ProjectCategoryFolder extends StatelessWidget {
                   subtitle: category.description != null
                       ? Text(
                           category.description!,
-                          style: textTheme.bodySmall?.copyWith(
+                          style: AppTypography.caption(
                             color: colorScheme.onSurfaceVariant,
                           ),
                         )
@@ -119,14 +120,14 @@ class ProjectCategoryFolder extends StatelessWidget {
                       IconButton(
                         onPressed: onCategoryEdit,
                         icon: const Icon(Icons.edit_rounded),
-                        iconSize: 20.w,
+                        iconSize: 16.w,
                         tooltip: 'Kategorie bearbeiten',
                       ),
                       // Delete button
                       IconButton(
                         onPressed: onCategoryDelete,
                         icon: const Icon(Icons.delete_rounded),
-                        iconSize: 20.w,
+                        iconSize: 16.w,
                         tooltip: 'Kategorie löschen',
                       ),
                       // Expand/Collapse button

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/theme/typography.dart';
+import '../../../core/theme/spacing.dart';
 import '../models/project_category.dart';
 
 /// Individual project tile with drag functionality and detailed information
@@ -31,8 +33,8 @@ class ProjectItemTile extends StatelessWidget {
         elevation: 8,
         borderRadius: BorderRadius.circular(AppConstants.cardRadius.r),
         child: Container(
-          width: 300.w,
-          padding: EdgeInsets.all(AppConstants.defaultPadding.w),
+          width: 280.w,
+          padding: EdgeInsets.all(AppSpacing.cardPadding),
           decoration: BoxDecoration(
             color: colorScheme.surface,
             borderRadius: BorderRadius.circular(AppConstants.cardRadius.r),
@@ -65,8 +67,8 @@ class ProjectItemTile extends StatelessWidget {
       ),
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(
-          horizontal: AppConstants.defaultPadding.w,
-          vertical: AppConstants.smallPadding.h,
+          horizontal: AppSpacing.listItemPadding,
+          vertical: AppSpacing.verticalMd,
         ),
         leading: _buildPriorityIndicator(context),
         title: _buildProjectContent(context),
@@ -78,8 +80,8 @@ class ProjectItemTile extends StatelessWidget {
 
   Widget _buildPriorityIndicator(BuildContext context) {
     return Container(
-      width: 4.w,
-      height: 40.h,
+      width: 3.w,
+      height: 32.h,
       decoration: BoxDecoration(
         color: project.priorityColor,
         borderRadius: BorderRadius.circular(2.r),
@@ -100,14 +102,14 @@ class ProjectItemTile extends StatelessWidget {
             Expanded(
               child: Text(
                 project.title,
-                style: textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  decoration: project.isCompleted 
-                      ? TextDecoration.lineThrough 
-                      : null,
+                style: AppTypography.title(
                   color: project.isCompleted 
                       ? colorScheme.onSurfaceVariant 
                       : colorScheme.onSurface,
+                ).copyWith(
+                  decoration: project.isCompleted 
+                      ? TextDecoration.lineThrough 
+                      : null,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -122,7 +124,7 @@ class ProjectItemTile extends StatelessWidget {
           ],
         ),
 
-        SizedBox(height: AppConstants.smallPadding.h * 0.5),
+        SizedBox(height: AppSpacing.verticalXs),
 
         // Description
         Text(
@@ -134,7 +136,7 @@ class ProjectItemTile extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
 
-        SizedBox(height: AppConstants.smallPadding.h),
+        SizedBox(height: AppSpacing.verticalSm),
 
         // Progress bar
         if (project.progress > 0)
@@ -165,7 +167,7 @@ class ProjectItemTile extends StatelessWidget {
                 backgroundColor: colorScheme.outline.withAlpha(50),
                 valueColor: AlwaysStoppedAnimation<Color>(project.priorityColor),
               ),
-              SizedBox(height: AppConstants.smallPadding.h),
+              SizedBox(height: AppSpacing.verticalSm),
             ],
           ),
 

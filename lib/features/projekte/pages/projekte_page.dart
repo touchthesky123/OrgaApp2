@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/theme/typography.dart';
+import '../../../core/theme/spacing.dart';
 import '../models/project_category.dart';
 import '../services/project_service.dart';
 import '../widgets/project_category_folder.dart';
@@ -49,18 +51,17 @@ class _ProjektePageState extends State<ProjektePage> {
         children: [
           // Header with stats
           Padding(
-            padding: EdgeInsets.all(AppConstants.defaultPadding.w),
+            padding: EdgeInsets.all(AppSpacing.xl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Projektmanagement',
-                  style: textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                  style: AppTypography.headline(
                     color: colorScheme.onSurface,
                   ),
                 ),
-                SizedBox(height: AppConstants.smallPadding.h),
+                SizedBox(height: AppSpacing.verticalMd),
                 Row(
                   children: [
                     _buildStatCard(
@@ -70,7 +71,7 @@ class _ProjektePageState extends State<ProjektePage> {
                       Icons.folder_rounded,
                       Colors.blue,
                     ),
-                    SizedBox(width: AppConstants.defaultPadding.w),
+                    SizedBox(width: AppSpacing.lg),
                     _buildStatCard(
                       context,
                       'Projekte',
@@ -118,30 +119,29 @@ class _ProjektePageState extends State<ProjektePage> {
 
     return Expanded(
       child: Container(
-        padding: EdgeInsets.all(AppConstants.defaultPadding.w),
+        padding: EdgeInsets.all(AppSpacing.cardPadding),
         decoration: BoxDecoration(
-          color: color.withAlpha(30),
-          borderRadius: BorderRadius.circular(AppConstants.cardRadius.r),
+          color: color.withAlpha(20),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
         ),
         child: Row(
           children: [
-            Icon(icon, color: color, size: 24.w),
-            SizedBox(width: AppConstants.smallPadding.w),
+            Icon(icon, color: color, size: 18.w),
+            SizedBox(width: AppSpacing.iconSpacing),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     value,
-                    style: textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                    style: AppTypography.title(
                       color: color,
                     ),
                   ),
                   Text(
                     title,
-                    style: textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurface,
+                    style: AppTypography.caption(
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
